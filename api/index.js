@@ -4,22 +4,24 @@ export default async function handler(req, res) {
   }
 
   try {
-    const response = await fetch('https://pcu.budhosp.com/api/appsheet-n8n', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        // ลองปลอม User-Agent บางครั้ง Cloudflare จะปล่อย
-        'User-Agent': 'Mozilla/5.0',
-      },
-      body: JSON.stringify(req.body),
-    });
+    const response = await fetch(
+      'https://pcu.budhosp.com/api/appsheet-n8n',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'User-Agent': 'Mozilla/5.0'
+        },
+        body: JSON.stringify(req.body),
+      }
+    );
 
-    const text = await response.text(); // 👈 ใช้ text กัน JSON แตก
+    const text = await response.text(); // กัน JSON พัง
 
-    return res.status(response.status).send(text);
+    res.status(response.status).send(text);
 
   } catch (err) {
-    return res.status(500).json({
+    res.status(500).json({
       success: false,
       error: err.message
     });
